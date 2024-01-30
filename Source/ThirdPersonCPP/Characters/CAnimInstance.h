@@ -12,10 +12,11 @@ class THIRDPERSONCPP_API UCAnimInstance : public UAnimInstance
 public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-
+	
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Speed;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Direction;
 };

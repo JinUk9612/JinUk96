@@ -1,15 +1,16 @@
-#pragma
+#pragma once
+
 //-----------------------------------------------------------------------------
 //Macros
 //-----------------------------------------------------------------------------
-#define CheckNull(p) {if(p == nullptr) return;}
-#define CheckNullResult(p, result) {if(p == nullptr) return result;}
+#define CheckNull(p) { if(p == nullptr) return; }
+#define CheckNullResult(p, result) { if(p == nullptr) return result; }
 
-#define CheckTrue(p) {if(p == true) return;}
-#define CheckTrueResult(p, result) {if(p == true) return result;}
+#define CheckTrue(p) { if(p == true) return; }
+#define CheckTrueResult(p, result) { if(p == true) return result; }
 
-#define CheckFalse(p) {if(p == false) return;}
-#define CheckFalseResult(p, result) {if(p == false) return result;}
+#define CheckFalse(p) { if(p == false) return; }
+#define CheckFalseResult(p, result) { if(p == false) return result; }
 
 //-----------------------------------------------------------------------------
 //CHelpers
@@ -17,51 +18,45 @@
 class THIRDPERSONCPP_API CHelpers
 {
 public:
-
 	template<typename T>
-	//TSubclassOf<T> 내부적으로 * 포인터 하나를 붙여줌 ,즉 GetClass 함수의 TSub.. 는 더블포인터 ** 
 	static void GetClass(TSubclassOf<T>* OutClass, FString InPath)
 	{
 		ConstructorHelpers::FClassFinder<T> asset(*InPath);
-
-		verifyf(asset.Succeeded(),L"Class Not Found");
-
-		 *OutClass= asset.Class;
+		verifyf(asset.Succeeded(), TEXT("Class Not Found"));
+		
+		*OutClass = asset.Class;
 	}
+
 	template<typename T>
-	static void GetAsset(T** OutObject,FString InPath)
+	static void GetAsset(T** OutObject, FString InPath)
 	{
 		ConstructorHelpers::FObjectFinder<T> asset(*InPath);
-		verifyf(asset.Succeeded(), L"Asset Not Found");
+		verifyf(asset.Succeeded(), TEXT("Asset Not Found"));
 
 		*OutObject = asset.Object;
 	}
 
 	template<typename T>
 	static void GetAssetDynamic(T** OutObject, FString InPath)
-	{ 
+	{
 		T* object = Cast<T>(StaticLoadObject(T::StaticClass(), nullptr, *InPath));
-		verifyf(!!object, L"Asset Not Found - Dynamic");
+		verifyf(!!object, TEXT("Asset Not Found - Dynamic"));
 
 		*OutObject = object;
-
 	}
 
-
 	template<typename T>
-	static void CreateSceneComponent(AActor* InActor,T** OutComponent,FName InName,USceneComponent* InParent = nullptr)
+	static void CreateSceneComponent(AActor* InActor, T** OutComponent, FName InName, USceneComponent* InParent = nullptr)
 	{
-
 		*OutComponent = InActor->CreateDefaultSubobject<T>(InName);
-
+		
 		if (!!InParent)
 		{
 			(*OutComponent)->SetupAttachment(InParent);
 			return;
 		}
-
-			InActor->SetRootComponent(*OutComponent);
-
+		
+		InActor->SetRootComponent(*OutComponent);
 	}
 
 	template<typename T>
@@ -69,7 +64,4 @@ public:
 	{
 		*OutComponent = InActor->CreateDefaultSubobject<T>(InName);
 	}
-
-
-
 };

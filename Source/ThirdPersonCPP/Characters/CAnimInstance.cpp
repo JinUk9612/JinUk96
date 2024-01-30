@@ -6,7 +6,7 @@ void UCAnimInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
 
-
+	
 }
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -20,5 +20,5 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	FRotator controlRotation = FRotator(0, ownerCharacter->GetControlRotation().Yaw, 0);
 	Direction = CalculateDirection(ownerCharacter->GetVelocity(), controlRotation);
-
+	
 }

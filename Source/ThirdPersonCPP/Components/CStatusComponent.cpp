@@ -18,10 +18,7 @@ void UCStatusComponent::SetMove()
 	bCanMove = true; 
 }
 
-void UCStatusComponent::SetStop()
-{ 
-	bCanMove = false;
+void UCStatusComponent::SetStop() 
+{
+	bCanMove = false; 
 }
-
-
-

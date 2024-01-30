@@ -16,9 +16,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-
-
-
 public:
 	FORCEINLINE bool IsCanMove() { return bCanMove; }
 
@@ -30,7 +27,6 @@ public:
 	void SetStop();
 
 private:
-
 	UPROPERTY(EditAnywhere, Category = "Speed")
 		float SneakSpeed = 200.f;
 
@@ -39,7 +35,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Speed")
 		float SprintSpeed = 600.f;
-		
+
 private:
 	bool bCanMove = true;
 };
