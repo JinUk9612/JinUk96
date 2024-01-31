@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Components/CStateComponent.h"
 #include "CPlayer.generated.h"
 
 UCLASS()
@@ -26,6 +27,27 @@ private:
 	void OnHorizontalLook(float InAxis);
 	void OnVerticalLook(float InAxis);
 	void OnZoom(float InAxis);
+	
+
+	//Action Event
+private:
+	void OnEvade();
+	void OnWalk();
+	void OffWalk();
+
+	//Common Montage Play
+private:
+	void Begin_Roll();
+	void Begin_Backstep();
+
+public:
+	void End_Roll();	// End 는 노티파이에서 호출해야하기 때문에 public: 으로 변경한다.
+	void End_Backstep();
+
+private:
+	UFUNCTION()
+		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
+
 
 	//Scene Component
 private:
@@ -48,4 +70,8 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCMontagesComponent* Montages;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCActionComponent* Action;
+
 };

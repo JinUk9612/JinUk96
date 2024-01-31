@@ -5,6 +5,9 @@
 #include "Engine/DataTable.h"
 #include "CStateComponent.h"
 #include "CMontagesComponent.generated.h"
+//===================================================================================================
+//=================================Struct Table Row Based ===========================================
+//===================================================================================================
 
 USTRUCT(BlueprintType)
 struct FMontageData : public FTableRowBase
@@ -31,6 +34,9 @@ public:
 	//class, struct 또는 포인터
 
 };
+//===================================================================================================
+//==================================Class MontageComponent===========================================
+//===================================================================================================
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class THIRDPERSONCPP_API UCMontagesComponent : public UActorComponent
@@ -42,6 +48,14 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+public:
+	void PlayRoll();
+	void PlayBackstep();
+
+
+private:
+	void PlayAimMontage(EStateType InStateType);
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
