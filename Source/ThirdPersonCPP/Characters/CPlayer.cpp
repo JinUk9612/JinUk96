@@ -79,6 +79,13 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Evade", EInputEvent::IE_Pressed, this, &ACPlayer::OnEvade);
 	PlayerInputComponent->BindAction("Walk", EInputEvent::IE_Pressed, this, &ACPlayer::OnWalk);
 	PlayerInputComponent->BindAction("Walk", EInputEvent::IE_Released, this, &ACPlayer::OffWalk);
+	PlayerInputComponent->BindAction("Fist", EInputEvent::IE_Pressed, this, &ACPlayer::OnFist);
+	PlayerInputComponent->BindAction("OneHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnOneHand);
+	PlayerInputComponent->BindAction("TwoHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnTwoHand);
+	PlayerInputComponent->BindAction("MagicBall", EInputEvent::IE_Pressed, this, &ACPlayer::OnMagicBall);
+
+
+
 
 }
 
@@ -147,6 +154,30 @@ void ACPlayer::OffWalk()
 {
 	GetCharacterMovement()->MaxWalkSpeed = Status->GetSprintSpeed();
 
+}
+
+void ACPlayer::OnFist()
+{
+	CheckFalse(State->IsIdleMode());
+	Action->SetFistMode();
+}
+
+void ACPlayer::OnOneHand()
+{
+	CheckFalse(State->IsIdleMode());
+	Action->SetOneHandMode();
+}
+
+void ACPlayer::OnTwoHand()
+{
+	CheckFalse(State->IsIdleMode());
+	Action->SetTwoHandMode();
+}
+
+void ACPlayer::OnMagicBall()
+{
+	CheckFalse(State->IsIdleMode());
+	Action->SetMagicBallMode();
 }
 
 void ACPlayer::Begin_Roll()

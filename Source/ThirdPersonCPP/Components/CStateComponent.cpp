@@ -30,6 +30,11 @@ void UCStateComponent::SetBackstepMode()
 
 }
 
+void UCStateComponent::SetEquipMode()
+{
+	ChangeType(EStateType::Equip);
+}
+
 void UCStateComponent::ChangeType(EStateType InNewType)
 {
 

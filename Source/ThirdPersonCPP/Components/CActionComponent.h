@@ -64,6 +64,9 @@ public:
 		FActionTypeChangedSignature OnActionTypeChanged;
 
 private:
+	UPROPERTY(EditDefaultsOnly)
+		class UCActionData* Datas[(int32)EActionType::Max];
+private:
 	EActionType Type;
 		
 };
