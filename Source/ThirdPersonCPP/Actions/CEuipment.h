@@ -7,6 +7,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEquipmentDelegateSignatrue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUnequipmentDelegateSignatrue);
 
 UCLASS()
 class THIRDPERSONCPP_API ACEuipment : public AActor
@@ -36,6 +37,10 @@ public:
 public:
 	UPROPERTY(BlueprintAssignable)
 		FEquipmentDelegateSignatrue OnEquipmentDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+		FUnequipmentDelegateSignatrue OnUnequipmentDelegate;
+	
 
 protected:
 	virtual void BeginPlay() override;

@@ -3,10 +3,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Components/CStateComponent.h"
+#include "ICharacter.h"
 #include "CPlayer.generated.h"
 
 UCLASS()
-class THIRDPERSONCPP_API ACPlayer : public ACharacter
+class THIRDPERSONCPP_API ACPlayer : public ACharacter, public IICharacter
 {
 	GENERATED_BODY()
 
@@ -51,6 +52,9 @@ public:
 	void End_Roll();	// End 는 노티파이에서 호출해야하기 때문에 public: 으로 변경한다.
 	void End_Backstep();
 
+public:
+	virtual void SetBodyColor(FLinearColor InColor) override;
+
 private:
 	UFUNCTION()
 		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
@@ -80,5 +84,9 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCActionComponent* Action;
+
+private:
+	class UMaterialInstanceDynamic* BodyMaterial;
+	class UMaterialInstanceDynamic* LogoMaterial;
 
 };
