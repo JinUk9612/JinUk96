@@ -41,6 +41,8 @@ private:
 	void OnTwoHand();
 	void OnMagicBall();
 
+	void OnDoAction();
+
 
 
 	//Common Montage Play

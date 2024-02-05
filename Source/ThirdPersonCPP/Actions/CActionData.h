@@ -28,7 +28,27 @@ public:
 		bool bLookForward = true;
 };
 		
-		
+USTRUCT(BlueprintType)
+struct FDoActionData : public FEquipementData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+		float Power = 1.f;
+
+	UPROPERTY(EditAnywhere)
+		float HitStop;
+
+	UPROPERTY(EditAnywhere)
+		class UParticleSystem* Effect;
+
+	UPROPERTY(EditAnywhere)
+		FTransform EffcetTransform;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UCameraShake> ShakeClass;
+};
 
 
 UCLASS()
@@ -41,6 +61,12 @@ public:
 	void BeginPlay(class ACharacter* InOwnerCharacter);
 
 	FORCEINLINE class ACEuipment* GetEquipment() { return Equipment; }
+
+	FORCEINLINE class ACAttachment* GetAttachMent() { return Attachment; }
+
+
+	FORCEINLINE class ACDoAction* GetDoAction() { return DoAction; }
+
 
 private:
 	FString MakeLabelName(class ACharacter* InOwnerCharacter, FString InMiddleName);
@@ -59,9 +85,16 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attachment")
 		TSubclassOf<class ACAttachment> AttachmentClass;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DoAction")
+		TSubclassOf<class ACDoAction> DoActionClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DoAction")
+		TArray<FDoActionData> DoActionDatas;
 	
 
 private:
 	class ACEuipment* Equipment;
 	class ACAttachment* Attachment;
+	class ACDoAction* DoAction;
+
 };

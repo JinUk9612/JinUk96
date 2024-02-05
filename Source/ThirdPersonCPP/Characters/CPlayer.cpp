@@ -101,6 +101,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("TwoHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnTwoHand);
 	PlayerInputComponent->BindAction("MagicBall", EInputEvent::IE_Pressed, this, &ACPlayer::OnMagicBall);
 
+	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::OnDoAction);
 
 
 
@@ -195,6 +196,11 @@ void ACPlayer::OnMagicBall()
 {
 	CheckFalse(State->IsIdleMode());
 	Action->SetMagicBallMode();
+}
+
+void ACPlayer::OnDoAction()
+{
+	Action->DoAction();
 }
 
 void ACPlayer::Begin_Roll()
