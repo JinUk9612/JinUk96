@@ -21,17 +21,17 @@ void UCActionData::BeginPlay(ACharacter* InOwnerCharacter)
 
 	if (!!EquipmentClass)
 	{
-		Equipment = InOwnerCharacter->GetWorld()->SpawnActorDeferred<ACEuipment>(EquipmentClass, transform,InOwnerCharacter);
+		Equipment = InOwnerCharacter->GetWorld()->SpawnActorDeferred<ACEuipment>(EquipmentClass, transform, InOwnerCharacter);
 		Equipment->SetData(EquipmentData);
 		Equipment->SetColor(EquipmentColor);
-		Equipment->SetActorLabel(MakeLabelName(InOwnerCharacter,"Equipment"));
+		Equipment->SetActorLabel(MakeLabelName(InOwnerCharacter, "Equipment"));
 
 		UGameplayStatics::FinishSpawningActor(Equipment, transform);
 
 		if (!!Attachment)
 		{
-			Equipment->OnEquipmentDelegate.AddDynamic(Attachment,&ACAttachment::OnEquip);
-			Equipment->OnUnequipmentDelegate.AddDynamic(Attachment,&ACAttachment::OnUnequip);
+			Equipment->OnEquipmentDelegate.AddDynamic(Attachment, &ACAttachment::OnEquip);
+			Equipment->OnUnequipmentDelegate.AddDynamic(Attachment, &ACAttachment::OnUnequip);
 		}
 	}
 
@@ -42,6 +42,12 @@ void UCActionData::BeginPlay(ACharacter* InOwnerCharacter)
 		DoAction->SetActorLabel(MakeLabelName(InOwnerCharacter, "DoAction"));
 		DoAction->SetDatas(DoActionDatas);
 		UGameplayStatics::FinishSpawningActor(DoAction, transform);
+
+		if (!!Attachment)
+		{
+			Attachment->OnAttachmentBeginOverlap.AddDynamic(DoAction, &ACDoAction::OnAttachmentBeginOverlap);
+			Attachment->OnAttachmentEndOverlap.AddDynamic(DoAction, &ACDoAction::OnAttachmentEndOverlap);
+		}
 	}
 
 }

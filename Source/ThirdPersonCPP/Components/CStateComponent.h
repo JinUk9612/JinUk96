@@ -14,6 +14,8 @@ enum class EStateType : uint8 // uint8 == Byte
 	Backstep,
 	Equip,
 	Action,
+	Hitted,
+	Dead,
 	Max
 };
 
@@ -46,12 +48,20 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsActionMode() { return Type == EStateType::Action; }
 
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE bool IsHittedMode() { return Type == EStateType::Hitted; }
+
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE bool IsDeadMode() { return Type == EStateType::Dead; }
+
 public:
 	void SetIdleMode();
 	void SetRollMode();
 	void SetBackstepMode();
 	void SetEquipMode();
 	void SetActionMode();
+	void SetHittedMode();
+	void SetDeadMode();
 
 
 
