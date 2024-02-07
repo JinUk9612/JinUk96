@@ -108,7 +108,7 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	if (Status->GetCurrentHealth() <= 0.f)
 	{
 		State->SetDeadMode();
-		return;
+		return DamageValue;
 	}
 
 	State->SetHittedMode();
@@ -118,8 +118,24 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 
 void ACEnemy::SetBodyColor(FLinearColor InColor)
 {
+
+	if (State->IsHittedMode())
+	{
+		InColor *= 30.f;
+
+		LogoMaterial->SetScalarParameterValue("bUseLogoLight", 1.f);
+		LogoMaterial->SetVectorParameterValue("LogoColor", InColor);
+		return;
+	}
+
 	BodyMaterial->SetVectorParameterValue("BodyColor", InColor);
 	LogoMaterial->SetVectorParameterValue("BodyColor", InColor);
+}
+
+void ACEnemy::ResetLogoColor()
+{
+	LogoMaterial->SetScalarParameterValue("bUseLogoLight", 0.f);
+	LogoMaterial->SetVectorParameterValue("LogoColor", FLinearColor::Black);
 }
 
 void ACEnemy::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
@@ -135,10 +151,37 @@ void ACEnemy::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 
 void ACEnemy::Hitted()
 {
+	//Update HealthWidget
+	UCHealthWidget* healthWidgetObject = Cast<UCHealthWidget>(HealthWidget->GetUserWidgetObject());
+	CheckNull(healthWidgetObject);
+
+	healthWidgetObject->UpdateHP(Status->GetCurrentHealth(), Status->GetMaxHealth());
+	//Play Hitted Montage
+	Montages->PlayHitted();
+
+	//Look At Attacker = 공격한 캐릭터 방향으로 본다
+
+	FVector start = GetActorLocation();
+	FVector target = Attacker->GetActorLocation();
+	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, target));
+
+
+	//Lanch Character = 공격받은 캐릭터를 뛰우거나 밀리게 하는 함수
+	FVector direction = (start - target).GetSafeNormal();
+	LaunchCharacter(direction * DamageValue * LaunchValue, true, false);
+
+	//Set Hitted Color
+	SetBodyColor(FLinearColor::Red);
+	UKismetSystemLibrary::K2_SetTimer(this, "ResetLogoColor",0.5f,false);
+
+
+
+	
 }
 
 void ACEnemy::Dead()
 {
+
 }
 
 

@@ -37,7 +37,7 @@ void UCMontagesComponent::BeginPlay()
 		}
 
 	}
-	CLog::Print(datas.Num());
+	
 }
 
 void UCMontagesComponent::PlayRoll()
@@ -49,6 +49,11 @@ void UCMontagesComponent::PlayBackstep()
 {
 	PlayAimMontage(EStateType::Backstep);
 
+}
+
+void UCMontagesComponent::PlayHitted()
+{
+	PlayAimMontage(EStateType::Hitted);
 }
 
 void UCMontagesComponent::PlayAimMontage(EStateType InStateType)
