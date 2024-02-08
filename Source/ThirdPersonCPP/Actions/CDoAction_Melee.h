@@ -16,8 +16,8 @@ public:
 	virtual void Begin_Action() override;
 	virtual void End_Action() override;
 	
-	virtual void OnAttachmentBeginOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
-	virtual void OnAttachmentEndOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
+	virtual void OnAttachmentBeginOverlap(class UPrimitiveComponent* InOverlappedComponent,class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
+	virtual void OnAttachmentEndOverlap(class UPrimitiveComponent* InOverlappedComponent,class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
 
 
 public:

@@ -28,9 +28,9 @@ public:
 
 public:
 	UFUNCTION()
-		virtual void OnAttachmentBeginOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) {};
+		virtual void OnAttachmentBeginOverlap(class UPrimitiveComponent* InOverlappedComponent,class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) {};
 	UFUNCTION()
-		virtual void OnAttachmentEndOverlap(class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) {};
+		virtual void OnAttachmentEndOverlap(class UPrimitiveComponent* InOverlappedComponent, class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) {};
 
 protected:
 	UPROPERTY(BlueprintReadOnly)

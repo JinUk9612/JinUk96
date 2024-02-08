@@ -3,6 +3,7 @@
 #include "GameFramework/Character.h"
 #include "Actions/CActionData.h"
 #include "Actions/CEuipment.h"
+#include "Actions/CAttachment.h"
 #include "Actions/CDoAction.h"
 
 UCActionComponent::UCActionComponent()
@@ -74,6 +75,20 @@ void UCActionComponent::SetTornadoMode()
 {
 	SetMode(EActionType::Tornado);
 
+}
+
+void UCActionComponent::OffAllCollisions()
+{
+	for (UCActionData* data : Datas)
+	{
+		if (!!data == false)
+			continue;
+
+		if (!!data->GetAttachMent() == false)
+			continue;
+
+		data->GetAttachMent()->OffCollision();
+	}
 }
 
 void UCActionComponent::SetMode(EActionType InType)
