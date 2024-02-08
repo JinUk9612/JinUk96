@@ -23,6 +23,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		void AttachTo(FName InSocketName);
 
+	UFUNCTION(BlueprintCallable)
+		void AttachToScene(class USceneComponent* InComponent, FName InSocketName);
+
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void OnEquip();
@@ -56,8 +59,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)  //BlueprintReadOnly 블루프린트에서 GET 모드로 가져오게만듬.
 		class ACharacter* OwnerCharacter;
 	
-private:
-	TArray<class UShapeComponent* > Collisions;
+	UPROPERTY(BlueprintReadOnly)
+		TArray<class UShapeComponent* > Collisions;
 
 
 };

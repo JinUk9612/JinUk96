@@ -30,6 +30,12 @@ void ACAttachment::AttachTo(FName InSocketName)
 	AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), InSocketName);
 }
 
+void ACAttachment::AttachToScene(USceneComponent* InComponent, FName InSocketName)
+{
+	CheckNull(OwnerCharacter);
+	InComponent->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), InSocketName);
+}
+
 void ACAttachment::OnCollision()
 {
 	for (UShapeComponent* collisions : Collisions)
