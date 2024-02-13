@@ -43,6 +43,9 @@ private:
 
 	void OnDoAction();
 
+	void OnDoSubAction();
+	void OffDoSubAction();
+
 
 
 	//Common Montage Play

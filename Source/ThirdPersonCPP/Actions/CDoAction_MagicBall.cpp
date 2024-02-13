@@ -4,15 +4,26 @@
 #include "GameFramework/Character.h"
 #include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
+#include "CAim.h"
 
 void ACDoAction_MagicBall::BeginPlay()
 {
 	Super::BeginPlay();
+	Aim = NewObject<UCAim>();  // Aim = New Object 와 같다.
+
+	//Dangling Point = 지웠는데 다시 써야 하는 곳이 있을경우 터지는 경우 
+	//Memory Leak = 안지웠으나 쓰지도 않아서 메모리를 차지하는 메모리 누수 현황
+	// -> unique_ptr , shared_ptr, weak_ptr  스마트 포인터 쓰는곳마다 래퍼런스를 1씩 증가시켜 61초마다 검사를 하여 사용하는곳이 없을경우 제거한다.
+	// 가비지 콜렉터가 61초마다 검사를하여 삭제가 된다면 그 후 사용시 터질  수 있어 Aim 이라는 가비지콜렉터에 등록해야한다 . 
+
+	Aim->BeginPlay(OwnerCharacter);
 }
 
 void ACDoAction_MagicBall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	Aim->Tick(DeltaTime);
 }
 
 void ACDoAction_MagicBall::DoAction()
@@ -42,4 +53,20 @@ void ACDoAction_MagicBall::End_Action()
 
 	StateComp->SetIdleMode();
 	StatusComp->SetMove();
+}
+
+void ACDoAction_MagicBall::BeginSubAction()
+{
+	CheckNull(Aim);
+
+	Aim->On();
+
+}
+
+void ACDoAction_MagicBall::EndSubAction()
+{
+	CheckNull(Aim);
+
+	Aim->Off();
+
 }

@@ -103,6 +103,11 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::OnDoAction);
 
+	PlayerInputComponent->BindAction("SubAciton", EInputEvent::IE_Pressed, this, &ACPlayer::OnDoSubAction);
+	PlayerInputComponent->BindAction("SubAciton", EInputEvent::IE_Released, this, &ACPlayer::OffDoSubAction);
+
+	
+
 
 
 }
@@ -201,6 +206,16 @@ void ACPlayer::OnMagicBall()
 void ACPlayer::OnDoAction()
 {
 	Action->DoAction();
+}
+
+void ACPlayer::OnDoSubAction()
+{
+	Action->DoSubAction(true);
+}
+
+void ACPlayer::OffDoSubAction()
+{
+	Action->DoSubAction(false);
 }
 
 void ACPlayer::Begin_Roll()
