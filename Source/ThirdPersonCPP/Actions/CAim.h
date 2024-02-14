@@ -19,8 +19,12 @@ public:
 public:
 	FORCEINLINE bool IsCanAim() { return SpringArm != nullptr && Camera != nullptr; }
 
+	FORCEINLINE bool IsZooming() { return bZooming; }
+
 	void On(); 
 	void Off();
+
+
 
 private:
 	UFUNCTION()
@@ -30,8 +34,8 @@ private:
 	class ACharacter* OwnerCharacter;
 	class USpringArmComponent* SpringArm;
 	class UCameraComponent* Camera;
-
 	bool bZooming;
+
 
 	FTimeline AimTimeline;
 	class UCurveFloat* Curve;

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "ICharacter.h"
+#include "Components/TimelineComponent.h"
 #include "Components/CStateComponent.h"
 #include "CEnemy.generated.h"
 
@@ -18,6 +19,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+
+	virtual void Tick(float DeltaTime) override;
+
 	virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 public:
@@ -37,6 +41,11 @@ private:
 	UFUNCTION()
 		void End_Dead();
 
+	UFUNCTION()
+		void StartDissolve(float Output);
+
+	UFUNCTION()
+		void EndDissolve();
 	//Scene Component
 
 
@@ -69,11 +78,20 @@ private:
 	UPROPERTY(EditAnywhere)
 		float DestroyPendingTime = 5.f;
 
+	UPROPERTY(EditAnywhere)
+		class UCurveFloat* DissolveCurve;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UMaterialInstanceDynamic* DissolveMaterial;
+
 private:
 	class UMaterialInstanceDynamic* BodyMaterial;
 	class UMaterialInstanceDynamic* LogoMaterial;
 
+
 	class ACharacter* Attacker;
 	class AActor* Causer;
 	float DamageValue;
+
+	FTimeline DissolveTimeline;
 };

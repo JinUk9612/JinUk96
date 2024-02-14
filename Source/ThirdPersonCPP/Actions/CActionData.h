@@ -4,6 +4,11 @@
 #include "Engine/DataAsset.h"
 #include "CActionData.generated.h"
 
+
+
+//=============================================================================
+// Equipment(Struct)
+//=============================================================================
 USTRUCT(BlueprintType)
 struct FEquipementData
 {
@@ -27,7 +32,12 @@ public:
 	UPROPERTY(EditAnywhere)
 		bool bLookForward = true;
 };
-		
+
+//=============================================================================
+// DoAction(Struct)
+//=============================================================================
+
+
 USTRUCT(BlueprintType)
 struct FDoActionData : public FEquipementData
 {
@@ -48,7 +58,14 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class UCameraShake> ShakeClass;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ACMagicBall> ProjectileClass;
 };
+
+//=============================================================================
+// DataAsset(Class)
+//=============================================================================
 
 
 UCLASS()

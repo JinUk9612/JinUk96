@@ -5,6 +5,7 @@
 #include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
 #include "CAim.h"
+#include "CMagicBall.h"
 
 void ACDoAction_MagicBall::BeginPlay()
 {
@@ -31,9 +32,11 @@ void ACDoAction_MagicBall::DoAction()
 	Super::DoAction();
 
 	CheckFalse(Datas.Num() > 0);
-
-
+	CheckFalse(Aim->IsCanAim());
+	CheckFalse(Aim->IsZooming());
 	CheckFalse(StateComp->IsIdleMode());
+
+
 	StateComp->SetActionMode();
 
 	OwnerCharacter->PlayAnimMontage(Datas[0].AnimMontage, Datas[0].PlayRate, Datas[0].StartSection);
@@ -44,7 +47,26 @@ void ACDoAction_MagicBall::Begin_Action()
 {
 	Super::Begin_Action();
 
+	CheckNull(Datas[0].ProjectileClass);
+
 	//Spawn Projectile Actor
+	FTransform transform ;
+
+	//Get Hand Socket Location 
+	FVector handLocation = OwnerCharacter->GetMesh()->GetSocketLocation("middle_01_r");   //GetSocketLocation  월드상의 소켓 위치를 가져오는 함수 
+	transform.AddToTranslation(handLocation);
+
+	//Get Controller Rotation
+	transform.SetRotation(FQuat(OwnerCharacter->GetControlRotation()));
+
+	//Spawn MagicBall
+	ACMagicBall* magicBall = GetWorld()->SpawnActorDeferred<ACMagicBall>(Datas[0].ProjectileClass, transform, OwnerCharacter, OwnerCharacter,ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
+	magicBall->SetData(Datas[0]);
+
+	//Damage Event Bining
+	magicBall->OnMagicBallOverlap.AddDynamic(this, &ACDoAction_MagicBall::OnMagicBallOverlap);
+
+	UGameplayStatics::FinishSpawningActor(magicBall, transform);
 }
 
 void ACDoAction_MagicBall::End_Action()
@@ -69,4 +91,12 @@ void ACDoAction_MagicBall::EndSubAction()
 
 	Aim->Off();
 
+}
+
+
+void ACDoAction_MagicBall::OnMagicBallOverlap(FHitResult InHitResult)
+{
+	FDamageEvent damageEvent;
+
+	InHitResult.GetActor()->TakeDamage(Datas[0].Power, damageEvent,OwnerCharacter->GetController(),this);
 }
