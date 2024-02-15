@@ -18,6 +18,9 @@ void ACDoAction_MagicBall::BeginPlay()
 	// 가비지 콜렉터가 61초마다 검사를하여 삭제가 된다면 그 후 사용시 터질  수 있어 Aim 이라는 가비지콜렉터에 등록해야한다 . 
 
 	Aim->BeginPlay(OwnerCharacter);
+
+	ActionComp = CHelpers::GetComponent<UCActionComponent>(OwnerCharacter);
+	ActionComp->OnActionTypeChanged.AddDynamic(this, &ACDoAction_MagicBall::AbortByActionTypeChanged);
 }
 
 void ACDoAction_MagicBall::Tick(float DeltaTime)
@@ -26,6 +29,7 @@ void ACDoAction_MagicBall::Tick(float DeltaTime)
 
 	Aim->Tick(DeltaTime);
 }
+
 
 void ACDoAction_MagicBall::DoAction()
 {
@@ -54,10 +58,19 @@ void ACDoAction_MagicBall::Begin_Action()
 
 	//Get Hand Socket Location 
 	FVector handLocation = OwnerCharacter->GetMesh()->GetSocketLocation("middle_01_r");   //GetSocketLocation  월드상의 소켓 위치를 가져오는 함수 
-	transform.AddToTranslation(handLocation);
 
-	//Get Controller Rotation
-	transform.SetRotation(FQuat(OwnerCharacter->GetControlRotation()));
+
+	//Get Camera Location&Rotation
+	FVector location;
+	FRotator rotation;
+	OwnerCharacter->GetController()->GetPlayerViewPoint(location, rotation);
+
+	location = location + rotation.Vector() * ((handLocation - location) | rotation.Vector());
+	transform.AddToTranslation(location);
+	transform.SetRotation(FQuat(rotation));
+	
+	//월드 위치 = 원래 위치 + 방향 * 길이 
+
 
 	//Spawn MagicBall
 	ACMagicBall* magicBall = GetWorld()->SpawnActorDeferred<ACMagicBall>(Datas[0].ProjectileClass, transform, OwnerCharacter, OwnerCharacter,ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
@@ -99,4 +112,15 @@ void ACDoAction_MagicBall::OnMagicBallOverlap(FHitResult InHitResult)
 	FDamageEvent damageEvent;
 
 	InHitResult.GetActor()->TakeDamage(Datas[0].Power, damageEvent,OwnerCharacter->GetController(),this);
+}
+
+void ACDoAction_MagicBall::AbortByActionTypeChanged(EActionType InPrevType, EActionType InNewType)
+{
+
+	//DoAction_MagicBall -> Aim -> Off
+	CheckFalse(Aim->IsCanAim());
+	CheckFalse(Aim->IsZooming());
+
+	Aim->Off();
+
 }

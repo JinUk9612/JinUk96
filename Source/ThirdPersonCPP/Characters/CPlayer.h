@@ -40,6 +40,9 @@ private:
 	void OnOneHand();
 	void OnTwoHand();
 	void OnMagicBall();
+	void OnWarp();
+	void OnTornado();
+
 
 	void OnDoAction();
 

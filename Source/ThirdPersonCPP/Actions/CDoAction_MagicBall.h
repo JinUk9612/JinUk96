@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Actions/CDoAction.h"
+#include "Components/CActionComponent.h"
 #include "CDoAction_MagicBall.generated.h"
 
 UCLASS()
@@ -15,6 +16,10 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+private:
+	UFUNCTION()
+		void AbortByActionTypeChanged(EActionType InPrevType, EActionType InNewType);
 
 public:
 	virtual void DoAction() override;
@@ -31,6 +36,8 @@ private:
 private:
 	UPROPERTY(VisibleInstanceOnly)
 		class UCAim* Aim;
+private:
+	class UCActionComponent* ActionComp;
 };
 
 
