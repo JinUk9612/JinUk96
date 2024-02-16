@@ -21,6 +21,9 @@ public:
 	virtual void End_Action() override;
 
 private:
+	bool GetCursorLocationAndRotation(FVector& OutLocation, FRotator& OutRotation);
+
+private:
 	class UStaticMeshComponent* Preview;
 	FVector Location;
 };

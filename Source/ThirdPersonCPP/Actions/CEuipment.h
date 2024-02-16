@@ -13,8 +13,8 @@ UCLASS()
 class THIRDPERSONCPP_API ACEuipment : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	ACEuipment();
 
 public:
@@ -40,7 +40,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 		FUnequipmentDelegateSignatrue OnUnequipmentDelegate;
-	
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -48,6 +48,7 @@ protected:
 public:
 	FORCEINLINE void SetData(const FEquipementData& InData) { Data = InData; }
 	FORCEINLINE void SetColor(const FLinearColor& InColor) { Color = InColor; }
+	FORCEINLINE const bool* IsEquippedThis() { return &bEquippedThis; }
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
@@ -61,6 +62,9 @@ protected:
 
 
 private:
-	 FEquipementData Data;
-	 FLinearColor Color;
+	FEquipementData Data;
+	FLinearColor Color;
+
+	bool bEquippedThis;
 };
+
