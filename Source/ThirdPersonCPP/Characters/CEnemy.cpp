@@ -120,7 +120,6 @@ void ACEnemy::BeginPlay()
 	onFinished.BindUFunction(this, "EndDissolve");
 	DissolveTimeline.SetTimelineFinishedFunc(onFinished);
 
-	Action->SetUnarmedMode();
 }
 
 void ACEnemy::Tick(float DeltaTime)
