@@ -2,7 +2,7 @@
 #include "CAnimNotify_EndAction.h"
 #include "Global.h"
 #include "Components/CActionComponent.h"
-#include "Actions/CActionData.h"
+#include "Actions/CActionData_Spawned.h"
 #include "Actions/CDoAction.h"
 
 
@@ -20,7 +20,7 @@ void UCAnimNotify_EndAction::Notify(USkeletalMeshComponent* MeshComp, UAnimSeque
 	UCActionComponent* actionComp = CHelpers::GetComponent<UCActionComponent>(MeshComp->GetOwner());
 	CheckNull(actionComp);
 
-	UCActionData* actionData = actionComp->GetCurrentData();
+	UCActionData_Spawned* actionData = actionComp->GetCurrentData();
 	CheckNull(actionData);
 
 	ACDoAction* doAction = actionData->GetDoAction();

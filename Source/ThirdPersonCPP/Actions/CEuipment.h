@@ -49,6 +49,7 @@ public:
 	FORCEINLINE void SetData(const FEquipementData& InData) { Data = InData; }
 	FORCEINLINE void SetColor(const FLinearColor& InColor) { Color = InColor; }
 	FORCEINLINE const bool* IsEquippedThis() { return &bEquippedThis; }
+	FORCEINLINE FLinearColor GetColor() { return Color; }
 
 protected:
 	UPROPERTY(BlueprintReadOnly)

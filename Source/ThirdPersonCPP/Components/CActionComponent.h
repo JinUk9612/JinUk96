@@ -25,7 +25,10 @@ protected:
 
 public:
 	UFUNCTION(BlueprintPure)
-		FORCEINLINE class UCActionData* GetCurrentData() { return Datas[(int32)Type]; }
+		FORCEINLINE class UCActionData_Spawned* GetCurrentData() { return Datas[(int32)Type]; }
+
+	UFUNCTION(BlueprintPure)
+		FORCEINLINE class UCActionData* GetCurrentDataAsset() { return DatasAssets[(int32)Type]; }
 
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsUnarmedMode() { return Type == EActionType::Unarmed; }
@@ -59,6 +62,8 @@ public:
 	UFUNCTION(BlueprintCallable) void SetTornadoMode();
 
 	void OffAllCollisions();
+	void End_Dead();
+
 
 private:
 	void SetMode(EActionType InType);
@@ -75,8 +80,11 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-		class UCActionData* Datas[(int32)EActionType::Max];
+		class UCActionData* DatasAssets[(int32)EActionType::Max];
 private:
 	EActionType Type;
+
+	UPROPERTY()
+		class UCActionData_Spawned* Datas[(int32)EActionType::Max];
 		
 };
