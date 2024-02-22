@@ -115,6 +115,12 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+
+FGenericTeamId ACPlayer::GetGenericTeamId()const
+{
+	return FGenericTeamId(TeamID);
+}
+
 void ACPlayer::OnMoveForward(float InAxis)
 {
 	CheckTrue(FMath::IsNearlyZero(InAxis));
@@ -301,4 +307,5 @@ void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 	case EStateType::Backstep:	Begin_Backstep();	break;
 	}
 }
+
 
