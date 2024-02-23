@@ -5,6 +5,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Characters/CEnemy_AI.h"
+#include "Characters/CPlayer.h"
 #include "Components/CBehaviorComponent.h"
 
 
@@ -61,6 +62,8 @@ void ACAIController::OnPossess(APawn* InPawn)
 void ACAIController::OnUnPossess()
 {
 	Super::OnUnPossess();
+
+	Perception->OnPerceptionUpdated.Clear();
 }
 
 void ACAIController::Tick(float DeltaTime)
@@ -75,8 +78,26 @@ void ACAIController::Tick(float DeltaTime)
 	}
 }
 
+float ACAIController::GetSightRadius()
+{
+	return Sight->SightRadius;
+}
+
 
 void ACAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
-	//Perception->GetCurrentlyPerceivedActors(nullptr,)
+	TArray<AActor*> actors;
+	Perception->GetCurrentlyPerceivedActors(nullptr, actors);
+	
+	ACPlayer* player = nullptr;
+
+	for (AActor* actor : actors)
+	{
+		player = Cast<ACPlayer>(actor);
+
+		if (!!player)
+			break;
+	}
+
+	Blackboard->SetValueAsObject("PlayerKey", player);
 }

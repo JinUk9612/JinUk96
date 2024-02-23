@@ -1,4 +1,7 @@
 #include "CStatusComponent.h"
+#include "Global.h"
+#include "Gameframework/Character.h"
+#include "Gameframework/CharacterMovementComponent.h"
 
 UCStatusComponent::UCStatusComponent()
 {
@@ -12,6 +15,14 @@ void UCStatusComponent::BeginPlay()
 
 	CurrentHealth = MaxHealth;
 	
+}
+
+void UCStatusComponent::SetSpeed(EMoveSpeedType InType)
+{
+	CheckNull(Cast<ACharacter>(GetOwner()));
+
+	UCharacterMovementComponent* movementComp = CHelpers::GetComponent<UCharacterMovementComponent>(GetOwner());
+	movementComp->MaxWalkSpeed = Speeds[(int32)InType];
 }
 
 void UCStatusComponent::SetMove()
