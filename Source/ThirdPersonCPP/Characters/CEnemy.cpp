@@ -38,6 +38,9 @@ ACEnemy::ACEnemy()
 	CHelpers::GetAsset<USkeletalMesh>(&meshAsset, "SkeletalMesh'/Game/Character/Mesh/SK_Mannequin.SK_Mannequin'");
 	GetMesh()->SetSkeletalMesh(meshAsset);
 
+	GetMesh()->SetCollisionProfileName(FName("EnemyBody"));
+
+
 	TSubclassOf<UAnimInstance> animInstanceClass;
 	CHelpers::GetClass<UAnimInstance>(&animInstanceClass, "AnimBlueprint'/Game/Enemies/ABP_CEnemy.ABP_CEnemy_C'");
 	GetMesh()->SetAnimInstanceClass(animInstanceClass);

@@ -14,6 +14,11 @@ public:
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
 	FORCEINLINE uint8 GetTeamID() {return TeamID;}
 
+	ACEnemy_AI();
+
+private:
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCPatrolComponent* Patrol;
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 		uint8 TeamID = 1;

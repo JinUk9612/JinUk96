@@ -1,18 +1,18 @@
-#include "CBTService_Melee.h"
+#include "CBTService_Magic.h"
 #include "Global.h"
 #include "Characters/CAIController.h"
 #include "Characters/CPlayer.h"
 #include "Characters/CEnemy_AI.h"
 #include "Components/CBehaviorComponent.h"
 #include "Components/CStateComponent.h"
-#include "Components/CPatrolComponent.h"
 
-UCBTService_Melee::UCBTService_Melee()
+
+UCBTService_Magic::UCBTService_Magic()
 {
-	NodeName = "Root_Melee";
+	NodeName = "Root_Magic";
 }
 
-void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+void UCBTService_Magic::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
@@ -29,8 +29,6 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	UCStateComponent* stateComp = CHelpers::GetComponent<UCStateComponent>(enemy);
 	CheckNull(stateComp);
 
-	UCPatrolComponent* patrolComp = CHelpers::GetComponent<UCPatrolComponent>(enemy);
-	CheckNull(patrolComp);
 
 
 	//Set Behavior Hitted
@@ -46,36 +44,30 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	//No Perceived Player    감지가 되지 않은 경우
 	if (player == nullptr)
 	{
-
-		if (patrolComp != nullptr && patrolComp->IsPathValid())
-		{
-			behaviorComp->SetPatrolMode();
-			return;
-
-		}
-
 		behaviorComp->SetWaitMode();
+		controller->ClearFocus(EAIFocusPriority::LastFocusPriority);
 		return;
 	}
 
 	//Perceived Player 감지가 된 경우 
+	controller->SetFocus(player);
+
 	float distance = enemy->GetDistanceTo(player);
+
 
 
 	//InBehaviorRange 공격 범위 안에 들어왔을경우
 	if (distance < controller->GetBehaviorRange())
 	{
-		behaviorComp->SetActionMode();
+		behaviorComp->SetAvoidMode();
 		return;
 	}
 
 	//InSight 시야범위 안에 들어왔을 경우 
 	if (distance < controller->GetSightRadius())
 	{
-		behaviorComp->SetApproachMode();
+		behaviorComp->SetActionMode();
 		return;
 	}
-
-
 
 }
