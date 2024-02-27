@@ -7,7 +7,7 @@
 UENUM(BlueprintType)
 enum class EMoveSpeedType : uint8
 {
-	Sneak,Wark,Sprint,Max
+	Sneak,Walk,Sprint,Max
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -25,7 +25,7 @@ public:
 	FORCEINLINE bool IsCanMove() { return bCanMove; }
 
 	FORCEINLINE float GetSneakSpeed() { return Speeds[(int32)EMoveSpeedType::Sneak]; }
-	FORCEINLINE float GetWalkSpeed() { return  Speeds[(int32)EMoveSpeedType::Wark]; }
+	FORCEINLINE float GetWalkSpeed() { return  Speeds[(int32)EMoveSpeedType::Walk]; }
 	FORCEINLINE float GetSprintSpeed() { return Speeds[(int32)EMoveSpeedType::Sprint]; }
 
 	FORCEINLINE float GetCurrentHealth() { return CurrentHealth; }

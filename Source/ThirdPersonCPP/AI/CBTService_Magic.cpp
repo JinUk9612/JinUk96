@@ -29,7 +29,12 @@ void UCBTService_Magic::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	UCStateComponent* stateComp = CHelpers::GetComponent<UCStateComponent>(enemy);
 	CheckNull(stateComp);
 
-
+	//Check Dead
+	if (stateComp->IsDeadMode())
+	{
+		behaviorComp->SetWaitMode();
+		return;
+	}
 
 	//Set Behavior Hitted
 	if (stateComp->IsHittedMode())

@@ -18,9 +18,9 @@ public:
 	ACEuipment();
 
 public:
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent) // 
 		void Equip();
-	void Equip_Implementation();    // Implementation 을 안만들면 c++ 언어를 벗어나서 인텔리센스가 안먹는다 이렇게 작성하면 인텔리센스가 먹는다.
+	void Equip_Implementation();    // BlueprintNativeEvent 는 Implementation 을 안만들면 c++ 언어를 벗어나서 인텔리센스가 안먹는다 이렇게 작성하면 인텔리센스가 먹는다.
 
 	UFUNCTION(BlueprintNativeEvent)
 		void Begin_Equip();

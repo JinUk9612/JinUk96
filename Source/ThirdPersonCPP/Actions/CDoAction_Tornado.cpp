@@ -141,6 +141,11 @@ void ACDoAction_Tornado::OnAttachmentEndOverlap(UPrimitiveComponent* InOverlappe
 	HittedCharacters.Remove(InOtherCharacter);
 }
 
+void ACDoAction_Tornado::Abort()
+{
+	Finish();
+}
+
 void ACDoAction_Tornado::Finish()
 {
 	if (!!Particle)

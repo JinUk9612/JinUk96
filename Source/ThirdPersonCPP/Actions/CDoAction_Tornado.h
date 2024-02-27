@@ -33,7 +33,7 @@ private:
 
 	virtual void OnAttachmentEndOverlap(class UPrimitiveComponent* InOverlappedComponent, class ACharacter* InAttacker, class AActor* InCauser, class ACharacter* InOtherCharacter) override;
 
-
+	virtual void Abort() override;
 private:
 	UPROPERTY(EditDefaultsOnly)
 		float DamageTime = 0.1f;

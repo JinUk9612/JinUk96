@@ -1,21 +1,20 @@
-#include "CBTTaskNode_DoAciton.h"
+#include "CBTTaskNode_ChangeAction.h"
 #include "Global.h"
 #include "Characters/CAIController.h"
-#include "Components/CActionComponent.h"
 #include "Components/CStateComponent.h"
 
-UCBTTaskNode_DoAciton::UCBTTaskNode_DoAciton()
+UCBTTaskNode_ChangeAction::UCBTTaskNode_ChangeAction()
 {
-	NodeName = "Action";
+	NodeName = "ChangeAction";
 
 	bNotifyTick = true;
 }
 
-EBTNodeResult::Type UCBTTaskNode_DoAciton::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+
+EBTNodeResult::Type UCBTTaskNode_ChangeAction::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-
 
 	ACAIController* controller = Cast<ACAIController>(OwnerComp.GetOwner());
 	CheckNullResult(controller, EBTNodeResult::Failed);
@@ -24,13 +23,22 @@ EBTNodeResult::Type UCBTTaskNode_DoAciton::ExecuteTask(UBehaviorTreeComponent& O
 	UCActionComponent* actionComp = CHelpers::GetComponent<UCActionComponent>(controller->GetPawn());
 	CheckNullResult(actionComp, EBTNodeResult::Failed);
 
-	RunningTime = 0.f;
-	actionComp->DoAction();
+	if (Type == EActionType::Warp)
+	{
+		if(actionComp->IsWarpMode()==false)
+			actionComp->SetWarpMode();
+	}
+	else if (Type == EActionType::MagicBall)
+	{
+		if (actionComp->IsMagicBallMode() == false)
+			actionComp->SetMagicBallMode();
+	}
 
 	return EBTNodeResult::InProgress;
+	
 }
 
-void UCBTTaskNode_DoAciton::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+void UCBTTaskNode_ChangeAction::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
@@ -41,9 +49,7 @@ void UCBTTaskNode_DoAciton::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* N
 	UCStateComponent* stateComp = CHelpers::GetComponent<UCStateComponent>(controller->GetPawn());
 	CheckNull(stateComp);
 
-	RunningTime += DeltaSeconds;
 
-	if (RunningTime >= Delay && stateComp->IsIdleMode())
+	if (stateComp->IsIdleMode())
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-
 }

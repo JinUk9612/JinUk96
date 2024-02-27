@@ -1,9 +1,12 @@
 #include "CDoAction_Warp.h"
 #include "Global.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/GameModeBase.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/CStateComponent.h"
 #include "Components/CStatusComponent.h"
+#include "Components/CBehaviorComponent.h"
+#include "Characters/CAIController.h"
 #include "CAttachment.h"
 
 void ACDoAction_Warp::BeginPlay()
@@ -32,6 +35,7 @@ void ACDoAction_Warp::Tick(float DeltaTime)
 
 
 	CheckFalse(*bEquippedThis);
+	CheckFalse(IsPlayerControlled());
 
 	FVector location;
 	FRotator rotation;
@@ -54,9 +58,22 @@ void ACDoAction_Warp::DoAction()
 
 	CheckFalse(StateComp->IsIdleMode());
 
-	FRotator temp;
-	CheckFalse(GetCursorLocationAndRotation(Location, temp));
+	
+	if (IsPlayerControlled())
+	{
+		FRotator temp;
+		CheckFalse(GetCursorLocationAndRotation(Location, temp));
+	}
+	else
+	{
+		ACAIController* aiController = OwnerCharacter->GetController<ACAIController>();
+		CheckNull(aiController);
 
+		UCBehaviorComponent* behaviorComp = CHelpers::GetComponent<UCBehaviorComponent>(aiController);
+		CheckNull(behaviorComp);
+
+		Location = behaviorComp->GetLocationKey();
+	}
 
 	StateComp->SetActionMode();
 
@@ -120,4 +137,9 @@ bool ACDoAction_Warp::GetCursorLocationAndRotation(FVector& OutLocation, FRotato
 	}
 
 	return false;
+}
+
+bool ACDoAction_Warp::IsPlayerControlled()
+{
+	return OwnerCharacter->GetClass() == GetWorld()->GetAuthGameMode()->DefaultPawnClass;
 }

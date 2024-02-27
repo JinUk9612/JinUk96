@@ -139,6 +139,8 @@ float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContro
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 	Causer = DamageCauser;
 
+	Action->AbortedByDamaged();
+
 	Status->DecreaseHealth(DamageValue);
 
 	if (Status->GetCurrentHealth() <= 0.f)

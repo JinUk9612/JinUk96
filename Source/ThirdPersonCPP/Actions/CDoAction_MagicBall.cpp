@@ -36,8 +36,9 @@ void ACDoAction_MagicBall::DoAction()
 	Super::DoAction();
 
 	CheckFalse(Datas.Num() > 0);
-	//CheckFalse(Aim->IsCanAim());
-	CheckFalse(Aim->IsZooming());
+	if(Aim->IsCanAim())
+		CheckFalse(Aim->IsZooming());
+
 	CheckFalse(StateComp->IsIdleMode());
 
 
