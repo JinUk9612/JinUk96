@@ -7,6 +7,7 @@
 #include "Characters/CEnemy_AI.h"
 #include "Characters/CPlayer.h"
 #include "Components/CBehaviorComponent.h"
+#include "Components/CStateComponent.h"
 
 
 ACAIController::ACAIController()
@@ -70,6 +71,19 @@ void ACAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	ACPlayer* player = Behavior->GetPlayerKey();
+	if (!!player)
+	{
+		UCStateComponent* playerStateComp = CHelpers::GetComponent<UCStateComponent>(player);
+		if (!!playerStateComp)
+		{
+			if (playerStateComp->IsDeadMode())
+			{
+				Blackboard->SetValueAsObject("PlayerKey", nullptr);
+			}
+
+		}
+	}
 	if (bDrawDebug)
 	{
 		FVector center = OwnerEnemy->GetActorLocation();

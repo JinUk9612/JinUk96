@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInstanceConstant.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/CStatusComponent.h"
 #include "Components/COptionComponent.h"
@@ -12,6 +13,7 @@
 #include "Components/CActionComponent.h"
 #include "Actions/CActionData.h"
 #include "Actions/CActionData_Spawned.h"
+#include "Widgets/CPlayerHealthWidget.h"
 
 
 ACPlayer::ACPlayer()
@@ -54,13 +56,18 @@ ACPlayer::ACPlayer()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->MaxWalkSpeed = Status->GetSprintSpeed();
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
+
+	
+
+	//Get Widget ClassRef
+	CHelpers::GetClass<UCPlayerHealthWidget>(&HealthWidgetClass, "WidgetBlueprint'/Game/Widgets/WB_PlayerHealth.WB_PlayerHealth_C'");
 }
 
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	//Set Dynamic Materials
 	UMaterialInstanceConstant* bodyMaterialAsset;
 	UMaterialInstanceConstant* logoMaterialAsset;
 
@@ -73,9 +80,15 @@ void ACPlayer::BeginPlay()
 	GetMesh()->SetMaterial(0, BodyMaterial);
 	GetMesh()->SetMaterial(1, LogoMaterial);
 	
+	//Bind StateType Chagned Event
 	State->OnStateTypeChanged.AddDynamic(this, &ACPlayer::OnStateTypeChanged);
 
 	Action->SetUnarmedMode();
+
+	//Create Widget
+	HealthWidget = Cast<UCPlayerHealthWidget>(CreateWidget(GetController<APlayerController>(),HealthWidgetClass));
+	CheckNull(HealthWidget);
+	HealthWidget->AddToViewport();
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -128,10 +141,12 @@ float ACPlayer::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 	Attacker = Cast<ACharacter>(EventInstigator->GetPawn());
 	Causer = DamageCauser;
 
+
 	Action->AbortedByDamaged();
 
 	Status->DecreaseHealth(DamageValue);
 
+	HealthWidget->Update();
 	if (Status->GetCurrentHealth() <= 0.f)
 	{
 		State->SetDeadMode();
@@ -308,7 +323,7 @@ void ACPlayer::Dead()
 void ACPlayer::End_Dead()
 {
 
-	CLog::Log("Player is Dead!!");
+	Camera->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
 
 }
 
