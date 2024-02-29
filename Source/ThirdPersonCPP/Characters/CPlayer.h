@@ -7,6 +7,9 @@
 #include "GenericTeamAgentInterface.h"
 #include "CPlayer.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHittedEventSignature);
+
+
 UCLASS()
 class THIRDPERSONCPP_API ACPlayer : public ACharacter, public IICharacter, public IGenericTeamAgentInterface
 {
@@ -53,7 +56,7 @@ private:
 	void OnDoSubAction();
 	void OffDoSubAction();
 
-	void Hitted();
+	void Hitted(EStateType InPrevType);
 	void Dead();
 
 	UFUNCTION()
@@ -68,8 +71,10 @@ private:
 
 
 public:
-	void End_Roll();	// End 는 노티파이에서 호출해야하기 때문에 public: 으로 변경한다.
-	void End_Backstep();
+	UFUNCTION()				// End 는 노티파이에서 호출해야하기 때문에 public: 으로 변경한다.
+		void End_Roll();
+	UFUNCTION()
+		void End_Backstep();
 
 public:
 	virtual void SetBodyColor(FLinearColor InColor) override;
@@ -86,6 +91,9 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCameraComponent* Camera;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		class UPostProcessComponent* PostProcess;
 
 	//Actor Component
 private:
@@ -113,6 +121,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 		TSubclassOf<class UCPlayerHealthWidget> HealthWidgetClass;
+
+public:
+	UPROPERTY(BlueprintAssignable)
+		FHittedEventSignature OnHittedEvent;
 
 private:
 	class UMaterialInstanceDynamic* BodyMaterial;

@@ -33,8 +33,11 @@ void ACHUD::DrawHUD()
 
 
 	FString typeStr = StateTypeAsUEnum->GetNameStringByValue((int64)StateComp->GetType());
-
 	DrawText(typeStr, FLinearColor::Red, 10, Canvas->ClipY - 70, nullptr, 3.f);
+
+	typeStr = StateTypeAsUEnum->GetNameStringByValue((int64)StateComp->GetPrevType());
+	DrawText(typeStr, FLinearColor::Green, 10, Canvas->ClipY - 150, nullptr, 3.f);
+
 
 
 	FVector2D center(Canvas->ClipX * 0.5f, Canvas->ClipY * 0.5);

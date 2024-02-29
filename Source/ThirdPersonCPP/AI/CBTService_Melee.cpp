@@ -54,6 +54,8 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	if (player == nullptr)
 	{
 
+		controller->ClearFocus(EAIFocusPriority::LastFocusPriority); // 플레이어를 바라보다 플레이어의 감지가 없어지면 클리어 포커스로 마지막에 바라봤던 위치를 고정시키는 함수 
+
 		if (patrolComp != nullptr && patrolComp->IsPathValid())
 		{
 			behaviorComp->SetPatrolMode();
@@ -66,6 +68,7 @@ void UCBTService_Melee::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	}
 
 	//Perceived Player 감지가 된 경우 
+	controller->SetFocus(player); // 플레이어를 계속 바라보게 하는 함수 
 	float distance = enemy->GetDistanceTo(player);
 
 

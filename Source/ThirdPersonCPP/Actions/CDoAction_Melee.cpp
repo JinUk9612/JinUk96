@@ -78,7 +78,7 @@ void ACDoAction_Melee::OnAttachmentBeginOverlap(UPrimitiveComponent* InOverlappe
 
 	// HitStop
 	float hitStop = Datas[ComboCount].HitStop;
-	if (FMath::IsNearlyZero(hitStop)==false)    // FMath:: IsNearlyZero(hitStop)  hitstop이 0이 아닌 값이라면 . 
+	if (FMath::IsNearlyZero(hitStop)==false && UGameplayStatics::GetGlobalTimeDilation(GetWorld()) >= 1.f)    // FMath:: IsNearlyZero(hitStop)  hitstop이 0이 아닌 값이라면 . 
 	{
 		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 2e-2f); 
 		UKismetSystemLibrary::K2_SetTimer(this, "ResetGlobalTimeDilation", hitStop * 2e-2f, false);
