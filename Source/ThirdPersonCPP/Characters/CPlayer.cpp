@@ -15,6 +15,7 @@
 #include "Actions/CActionData.h"
 #include "Actions/CActionData_Spawned.h"
 #include "Widgets/CPlayerHealthWidget.h"
+#include "Widgets/CSelectActionWidget.h"
 
 
 ACPlayer::ACPlayer()
@@ -69,6 +70,7 @@ ACPlayer::ACPlayer()
 
 	//Get Widget ClassRef
 	CHelpers::GetClass<UCPlayerHealthWidget>(&HealthWidgetClass, "WidgetBlueprint'/Game/Widgets/WB_PlayerHealth.WB_PlayerHealth_C'");
+	CHelpers::GetClass<UCSelectActionWidget>(&SelectActionWidgetClass, "WidgetBlueprint'/Game/Widgets/WB_SelectAction.WB_SelectAction_C'");
 }
 
 void ACPlayer::BeginPlay()
@@ -103,6 +105,11 @@ void ACPlayer::BeginPlay()
 	HealthWidget = Cast<UCPlayerHealthWidget>(CreateWidget(GetController<APlayerController>(),HealthWidgetClass));
 	CheckNull(HealthWidget);
 	HealthWidget->AddToViewport();
+
+	SelectActionWidget = Cast<UCSelectActionWidget>(CreateWidget(GetController<APlayerController>(), SelectActionWidgetClass));
+	CheckNull(SelectActionWidget);
+	SelectActionWidget->AddToViewport();
+	SelectActionWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -137,7 +144,9 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("SubAciton", EInputEvent::IE_Pressed, this, &ACPlayer::OnDoSubAction);
 	PlayerInputComponent->BindAction("SubAciton", EInputEvent::IE_Released, this, &ACPlayer::OffDoSubAction);
 
-	
+	PlayerInputComponent->BindAction("SelectAction", EInputEvent::IE_Pressed, this, &ACPlayer::OnSelectAction);
+	PlayerInputComponent->BindAction("SelectAction", EInputEvent::IE_Released, this, &ACPlayer::OffSelectAction);
+
 
 
 
@@ -288,6 +297,32 @@ void ACPlayer::OnDoSubAction()
 void ACPlayer::OffDoSubAction()
 {
 	Action->DoSubAction(false);
+}
+
+void ACPlayer::OnSelectAction()
+{
+	CheckFalse(State->IsIdleMode());
+	CheckNull(SelectActionWidget);
+
+	GetController<APlayerController>()->bShowMouseCursor = true;
+	GetController<APlayerController>()->SetInputMode(FInputModeGameAndUI());
+
+	SelectActionWidget->SetVisibility(ESlateVisibility::Visible);
+
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.1f);
+}
+
+void ACPlayer::OffSelectAction()
+{
+	CheckNull(SelectActionWidget);
+
+	GetController<APlayerController>()->bShowMouseCursor = false;
+	GetController<APlayerController>()->SetInputMode(FInputModeGameOnly());
+
+	SelectActionWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.f);
+
 }
 
 void ACPlayer::Hitted(EStateType InPrevType)

@@ -56,6 +56,10 @@ private:
 	void OnDoSubAction();
 	void OffDoSubAction();
 
+	void OnSelectAction();
+	void OffSelectAction();
+
+
 	void Hitted(EStateType InPrevType);
 	void Dead();
 
@@ -122,6 +126,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 		TSubclassOf<class UCPlayerHealthWidget> HealthWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+		TSubclassOf<class UCSelectActionWidget> SelectActionWidgetClass;
+
 public:
 	UPROPERTY(BlueprintAssignable)
 		FHittedEventSignature OnHittedEvent;
@@ -135,5 +142,6 @@ private:
 	class AActor* Causer;
 
 	class UCPlayerHealthWidget* HealthWidget;
+	class UCSelectActionWidget* SelectActionWidget;
 
 };
