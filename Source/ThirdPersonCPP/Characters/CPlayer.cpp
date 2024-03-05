@@ -16,6 +16,7 @@
 #include "Actions/CActionData_Spawned.h"
 #include "Widgets/CPlayerHealthWidget.h"
 #include "Widgets/CSelectActionWidget.h"
+#include "Widgets/CSelectActionItemWidget.h"
 
 
 ACPlayer::ACPlayer()
@@ -110,6 +111,13 @@ void ACPlayer::BeginPlay()
 	CheckNull(SelectActionWidget);
 	SelectActionWidget->AddToViewport();
 	SelectActionWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	SelectActionWidget->GetItemWidget("Item1")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnFist);
+	SelectActionWidget->GetItemWidget("Item2")->OnImageButtonPressed.AddDynamic(this, &ACPlayer::OnOneHand);
+	SelectActionWidget->GetItemWidget("Item3")->OnImageButtonPressed.AddDynamic(this,&ACPlayer::OnTwoHand);
+	SelectActionWidget->GetItemWidget("Item4")->OnImageButtonPressed.AddDynamic(this,&ACPlayer::OnMagicBall);
+	SelectActionWidget->GetItemWidget("Item5")->OnImageButtonPressed.AddDynamic(this,&ACPlayer::OnWarp);
+	SelectActionWidget->GetItemWidget("Item6")->OnImageButtonPressed.AddDynamic(this,&ACPlayer::OnTornado);
 }
 
 void ACPlayer::Tick(float DeltaTime)
