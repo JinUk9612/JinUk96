@@ -60,6 +60,8 @@ private:
 	void OnSelectAction();
 	void OffSelectAction();
 
+	void OnInteract();
+
 
 	void Hitted(EStateType InPrevType);
 	void Dead();

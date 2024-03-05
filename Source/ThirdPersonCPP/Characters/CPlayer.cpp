@@ -155,6 +155,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("SelectAction", EInputEvent::IE_Pressed, this, &ACPlayer::OnSelectAction);
 	PlayerInputComponent->BindAction("SelectAction", EInputEvent::IE_Released, this, &ACPlayer::OffSelectAction);
 
+	PlayerInputComponent->BindAction("Interact", EInputEvent::IE_Pressed, this, &ACPlayer::OnInteract);
 
 
 
@@ -331,6 +332,26 @@ void ACPlayer::OffSelectAction()
 
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.f);
 
+}
+
+void ACPlayer::OnInteract()
+{
+	//FVector start = GetActorLocation();
+	//FVector end = start + Camera->GetForwardVector() * 150.f;
+
+	//TArray<AActor*> ignores;
+	//ignores.Add(this); //Todo
+
+	//UKismetSystemLibrary::LineTraceSingle
+	//(
+	//	GetWorld(),
+	//	start,
+	//	end,
+	//	UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility),
+	//	true,
+
+
+	//);
 }
 
 void ACPlayer::Hitted(EStateType InPrevType)

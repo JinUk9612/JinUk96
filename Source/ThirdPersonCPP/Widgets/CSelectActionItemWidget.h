@@ -23,6 +23,10 @@ public:
 private:
 	UFUNCTION(BlueprintCallable)
 		void OnPressed();
+	UFUNCTION(BlueprintCallable)
+		void OnHover();
+	UFUNCTION(BlueprintCallable)
+		void OnUnhover();
 
 private:
 	class UCSelectActionWidget* GetParentWidget();
