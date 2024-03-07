@@ -122,6 +122,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCActionComponent* Action;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCFeetComponent* Feet;
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Team")
 		uint8 TeamID = 0;
